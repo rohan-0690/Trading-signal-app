@@ -11,12 +11,6 @@ function Dashboard({ symbol }) {
     accuracy: 0
   });
 
-  useEffect(() => {
-    fetchStats();
-    const interval = setInterval(fetchStats, 5000);
-    return () => clearInterval(interval);
-  }, [symbol]);
-
   const fetchStats = async () => {
     try {
       const [priceRes, accuracyRes] = await Promise.all([
@@ -33,6 +27,13 @@ function Dashboard({ symbol }) {
       console.error('Error fetching stats:', error);
     }
   };
+
+  useEffect(() => {
+    fetchStats();
+    const interval = setInterval(fetchStats, 5000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symbol]);
 
   return (
     <div className="dashboard">

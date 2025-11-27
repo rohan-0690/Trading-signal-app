@@ -11,7 +11,6 @@ import './App.css';
 function App() {
   const [activeSymbol, setActiveSymbol] = useState('BTCUSDT');
   const [signals, setSignals] = useState([]);
-  const [ws, setWs] = useState(null);
 
   useEffect(() => {
     const websocket = new WebSocket('ws://localhost:5000');
@@ -35,8 +34,6 @@ function App() {
         });
       }
     };
-
-    setWs(websocket);
 
     return () => websocket.close();
   }, [activeSymbol]);

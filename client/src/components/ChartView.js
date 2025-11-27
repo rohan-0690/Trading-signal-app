@@ -7,10 +7,6 @@ function ChartView({ symbol }) {
   const [chartData, setChartData] = useState([]);
   const [timeframe, setTimeframe] = useState('5m');
 
-  useEffect(() => {
-    fetchChartData();
-  }, [symbol, timeframe]);
-
   const fetchChartData = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/market/candles/${symbol}`, {
@@ -29,6 +25,11 @@ function ChartView({ symbol }) {
       console.error('Error fetching chart data:', error);
     }
   };
+
+  useEffect(() => {
+    fetchChartData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symbol, timeframe]);
 
   return (
     <div className="chart-view">
