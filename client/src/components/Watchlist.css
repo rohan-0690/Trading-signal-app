@@ -1,0 +1,107 @@
+.watchlist {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.watchlist-header h3 {
+  font-size: 1.2rem;
+}
+
+.add-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.watchlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.watchlist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.watchlist-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.watchlist-item.active {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.star-icon {
+  color: #fbbf24;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-symbol {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.item-name {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.item-price {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.item-change {
+  font-size: 0.8rem;
+}
+
+.item-change.positive {
+  color: #22c55e;
+}
+
+.item-change.negative {
+  color: #ef4444;
+}
