@@ -1,0 +1,146 @@
+.simple-indian-stocks {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.search-section h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.search-section form {
+  display: flex;
+  gap: 10px;
+}
+
+.search-section input {
+  flex: 1;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+}
+
+.search-section button {
+  padding: 15px 30px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-section button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result-section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.result-section h3 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.result-header h2 {
+  color: #fff;
+  margin: 0;
+}
+
+.badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge.BUY {
+  background: #38ef7d;
+  color: #000;
+}
+
+.badge.SELL {
+  background: #eb3349;
+  color: #fff;
+}
+
+.badge.HOLD {
+  background: #f2994a;
+  color: #fff;
+}
+
+.confidence {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 600;
+}
+
+.targets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.target-box {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.target-box span {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.target-box strong {
+  display: block;
+  color: #fff;
+  font-size: 20px;
+}
+
+.reason {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.reason strong {
+  color: #667eea;
+}

@@ -6,8 +6,7 @@ import SignalCard from './components/SignalCard';
 import ChartView from './components/ChartView';
 import Watchlist from './components/Watchlist';
 import RiskManager from './components/RiskManager';
-import IndexDashboard from './components/IndexDashboard';
-import UniversalStockSearch from './components/UniversalStockSearch';
+import SimpleIndianStocks from './components/SimpleIndianStocks';
 import './App.css';
 
 function App() {
@@ -83,15 +82,11 @@ function App() {
         </div>
       ) : (
         <div className="indian-stocks-container">
-          <div className="indian-stocks-welcome">
-            <h2>🇮🇳 Indian Stock Market Analysis</h2>
-            <p>Search and analyze Nifty 50 stocks, NSE/BSE stocks, and NIFTY options</p>
-          </div>
-          
-          <IndexDashboard />
-          <UniversalStockSearch onStockAnalyzed={setIndianStockSignal} />
-          
-          {indianStockSignal && (
+          <SimpleIndianStocks />
+        </div>
+      )}
+
+      {false && indianStockSignal && (
             <div className="indian-signal-display">
               <h3>📊 Analysis Result</h3>
               <div className="signal-details">
