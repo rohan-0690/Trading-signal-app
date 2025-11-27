@@ -8,7 +8,6 @@ import './UniversalStockSearch.css';
 function UniversalStockSearch({ onStockAnalyzed }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
   const [showNiftyAnalyzer, setShowNiftyAnalyzer] = useState(false);
 
   // Common NSE/BSE stock suffixes
@@ -49,8 +48,6 @@ function UniversalStockSearch({ onStockAnalyzed }) {
       const priceResponse = await axios.get(`/api/stock/price/${symbol}`);
       
       if (priceResponse.data.success) {
-        const stockData = priceResponse.data.data;
-        
         // Now analyze the stock
         const signalResponse = await axios.post('/api/stock/signal', {
           symbol: symbol,

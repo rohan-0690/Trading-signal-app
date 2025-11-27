@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TrendingUp, TrendingDown, Loader, Target, Shield, AlertCircle } from 'lucide-react';
+import { TrendingUp, Loader, Target, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import './NiftyOptionsAnalyzer.css';
 
@@ -14,13 +14,6 @@ function NiftyOptionsAnalyzer({ onClose }) {
   const [analysis, setAnalysis] = useState(null);
   
   const NIFTY_LOT_SIZE = 75; // NIFTY 50 lot size is 75 units
-
-  useEffect(() => {
-    fetchNiftyPrice();
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchNiftyPrice, 30000);
-    return () => clearInterval(interval);
-  }, []);
 
   const fetchNiftyPrice = async () => {
     try {
@@ -36,6 +29,14 @@ function NiftyOptionsAnalyzer({ onClose }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchNiftyPrice();
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchNiftyPrice, 30000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const generateStrikes = (spotPrice) => {
     const roundedPrice = Math.round(spotPrice / 50) * 50;

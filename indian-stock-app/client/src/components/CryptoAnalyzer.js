@@ -38,14 +38,6 @@ function CryptoAnalyzer() {
     { symbol: 'NEAR-USD', name: 'Near Protocol', icon: 'NEAR' }
   ];
 
-  // Auto-fetch popular cryptos on mount
-  useEffect(() => {
-    fetchPopularCryptos();
-    // Auto-refresh every 60 seconds
-    const interval = setInterval(fetchPopularCryptos, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
   const fetchPopularCryptos = async () => {
     try {
       // Fetch top 8 cryptos for live display
@@ -75,6 +67,15 @@ function CryptoAnalyzer() {
       console.error('Error fetching crypto list:', error);
     }
   };
+
+  // Auto-fetch popular cryptos on mount
+  useEffect(() => {
+    fetchPopularCryptos();
+    // Auto-refresh every 60 seconds
+    const interval = setInterval(fetchPopularCryptos, 60000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const analyzeCrypto = async (symbol) => {
     setLoading(true);

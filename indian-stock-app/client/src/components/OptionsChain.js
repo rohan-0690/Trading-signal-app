@@ -9,13 +9,6 @@ function OptionsChain() {
   const [loading, setLoading] = useState(true);
   const [selectedStrike, setSelectedStrike] = useState(null);
 
-  useEffect(() => {
-    fetchOptionChain();
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchOptionChain, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
   const fetchOptionChain = async () => {
     try {
       const response = await axios.get('/api/options/chain?range=10');
@@ -34,6 +27,14 @@ function OptionsChain() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchOptionChain();
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchOptionChain, 30000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading) {
     return (
