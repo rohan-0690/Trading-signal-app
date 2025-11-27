@@ -102,8 +102,12 @@ setInterval(async () => {
 }, 5000);
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
-module.exports = { broadcastUpdate };
+// Only start server if not in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
