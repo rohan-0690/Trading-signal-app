@@ -90,21 +90,27 @@ function App() {
           
           <IndexDashboard />
           
-          <UniversalStockSearch onStockAnalyzed={(signal) => {
-            console.log('Stock analyzed:', signal);
-            setIndianStockSignal(signal);
-          }} />
+          <UniversalStockSearch 
+            onStockAnalyzed={(signal) => {
+              try {
+                console.log('Stock analyzed:', signal);
+                setIndianStockSignal(signal);
+              } catch (error) {
+                console.error('Error setting signal:', error);
+              }
+            }} 
+          />
           
           {indianStockSignal && (
             <div className="indian-signal-display">
               <h3>📊 Analysis Result</h3>
               <div className="signal-details">
                 <div className="signal-header">
-                  <h2>{indianStockSignal.name || indianStockSignal.symbol}</h2>
-                  <span className={`action-badge ${indianStockSignal.action.toLowerCase()}`}>
-                    {indianStockSignal.action}
+                  <h2>{String(indianStockSignal.name || indianStockSignal.symbol || 'Stock')}</h2>
+                  <span className={`action-badge ${String(indianStockSignal.action || 'hold').toLowerCase()}`}>
+                    {String(indianStockSignal.action || 'HOLD')}
                   </span>
-                  <span className="confidence-badge">{indianStockSignal.confidence}% Confidence</span>
+                  <span className="confidence-badge">{Number(indianStockSignal.confidence || 50)}% Confidence</span>
                 </div>
                 
                 <div className="signal-meta">
@@ -131,23 +137,51 @@ function App() {
                 <div className="price-targets">
                   <div className="target-item entry">
                     <span className="label">Entry Price</span>
-                    <span className="value">₹{indianStockSignal.entry || indianStockSignal.targets?.[0] || 'N/A'}</span>
+                    <span className="value">
+                      ₹{typeof indianStockSignal.entry === 'number' 
+                        ? indianStockSignal.entry.toFixed(2) 
+                        : (indianStockSignal.targets && indianStockSignal.targets[0] 
+                          ? indianStockSignal.targets[0].toFixed(2) 
+                          : 'N/A')}
+                    </span>
                   </div>
                   <div className="target-item sl">
                     <span className="label">Stop Loss</span>
-                    <span className="value">₹{indianStockSignal.stopLoss || 'N/A'}</span>
+                    <span className="value">
+                      ₹{typeof indianStockSignal.stopLoss === 'number' 
+                        ? indianStockSignal.stopLoss.toFixed(2) 
+                        : 'N/A'}
+                    </span>
                   </div>
                   <div className="target-item t1">
                     <span className="label">Target 1</span>
-                    <span className="value">₹{indianStockSignal.targets?.[0] || indianStockSignal.target1 || 'N/A'}</span>
+                    <span className="value">
+                      ₹{indianStockSignal.targets && indianStockSignal.targets[0]
+                        ? indianStockSignal.targets[0].toFixed(2)
+                        : (typeof indianStockSignal.target1 === 'number' 
+                          ? indianStockSignal.target1.toFixed(2) 
+                          : 'N/A')}
+                    </span>
                   </div>
                   <div className="target-item t2">
                     <span className="label">Target 2</span>
-                    <span className="value">₹{indianStockSignal.targets?.[1] || indianStockSignal.target2 || 'N/A'}</span>
+                    <span className="value">
+                      ₹{indianStockSignal.targets && indianStockSignal.targets[1]
+                        ? indianStockSignal.targets[1].toFixed(2)
+                        : (typeof indianStockSignal.target2 === 'number' 
+                          ? indianStockSignal.target2.toFixed(2) 
+                          : 'N/A')}
+                    </span>
                   </div>
                   <div className="target-item t3">
                     <span className="label">Target 3</span>
-                    <span className="value">₹{indianStockSignal.targets?.[2] || indianStockSignal.target3 || 'N/A'}</span>
+                    <span className="value">
+                      ₹{indianStockSignal.targets && indianStockSignal.targets[2]
+                        ? indianStockSignal.targets[2].toFixed(2)
+                        : (typeof indianStockSignal.target3 === 'number' 
+                          ? indianStockSignal.target3.toFixed(2) 
+                          : 'N/A')}
+                    </span>
                   </div>
                 </div>
 
@@ -162,32 +196,40 @@ function App() {
                   </div>
                 )}
 
-                {indianStockSignal.indicators && (
+                {indianStockSignal.indicators && typeof indianStockSignal.indicators === 'object' && (
                   <div className="indicators-info">
                     <h4>📊 Technical Indicators:</h4>
                     <div className="indicators-grid">
-                      {indianStockSignal.indicators.rsi && (
+                      {typeof indianStockSignal.indicators.rsi === 'number' && (
                         <div className="indicator-item">
                           <span className="indicator-label">RSI:</span>
                           <span className="indicator-value">{indianStockSignal.indicators.rsi.toFixed(2)}</span>
                         </div>
                       )}
-                      {indianStockSignal.indicators.macd && (
+                      {indianStockSignal.indicators.macd && typeof indianStockSignal.indicators.macd === 'object' && (
                         <div className="indicator-item">
                           <span className="indicator-label">MACD:</span>
-                          <span className="indicator-value">{indianStockSignal.indicators.macd.histogram?.toFixed(2) || 'N/A'}</span>
+                          <span className="indicator-value">
+                            {typeof indianStockSignal.indicators.macd.histogram === 'number' 
+                              ? indianStockSignal.indicators.macd.histogram.toFixed(2) 
+                              : 'N/A'}
+                          </span>
                         </div>
                       )}
-                      {indianStockSignal.indicators.ema && (
+                      {indianStockSignal.indicators.ema && typeof indianStockSignal.indicators.ema === 'object' && (
                         <>
-                          <div className="indicator-item">
-                            <span className="indicator-label">EMA 20:</span>
-                            <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema20?.toFixed(2) || 'N/A'}</span>
-                          </div>
-                          <div className="indicator-item">
-                            <span className="indicator-label">EMA 50:</span>
-                            <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema50?.toFixed(2) || 'N/A'}</span>
-                          </div>
+                          {typeof indianStockSignal.indicators.ema.ema20 === 'number' && (
+                            <div className="indicator-item">
+                              <span className="indicator-label">EMA 20:</span>
+                              <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema20.toFixed(2)}</span>
+                            </div>
+                          )}
+                          {typeof indianStockSignal.indicators.ema.ema50 === 'number' && (
+                            <div className="indicator-item">
+                              <span className="indicator-label">EMA 50:</span>
+                              <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema50.toFixed(2)}</span>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
