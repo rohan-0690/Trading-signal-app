@@ -11,15 +11,26 @@ const alertsRouter = require('./routes/alerts');
 const MarketDataService = require('./services/marketDataService');
 const SignalEngine = require('./services/signalEngine');
 
-// Indian Stock Market Services
-const NSEDataService = require('./services/nseDataService');
-const IndianStockSignalEngine = require('./services/indianStockSignalEngine');
-const OptionsCalculator = require('./services/optionsCalculator');
-const { NIFTY_50_STOCKS } = require('./config/nifty50');
+// Indian Stock Market Services (with error handling)
+let nseDataService, indianSignalEngine, optionsCalculator, NIFTY_50_STOCKS;
 
-const nseDataService = new NSEDataService();
-const indianSignalEngine = new IndianStockSignalEngine();
-const optionsCalculator = new OptionsCalculator();
+try {
+  const NSEDataService = require('./services/nseDataService');
+  const IndianStockSignalEngine = require('./services/indianStockSignalEngine');
+  const OptionsCalculator = require('./services/optionsCalculator');
+  const niftyConfig = require('./config/nifty50');
+  
+  nseDataService = new NSEDataService();
+  indianSignalEngine = new IndianStockSignalEngine();
+  optionsCalculator = new OptionsCalculator();
+  NIFTY_50_STOCKS = niftyConfig.NIFTY_50_STOCKS;
+  
+  console.log('Indian stock services initialized successfully');
+} catch (error) {
+  console.error('Error initializing Indian stock services:', error.message);
+  // Set fallback empty array
+  NIFTY_50_STOCKS = [];
+}
 
 const app = express();
 const server = http.createServer(app);
@@ -36,12 +47,21 @@ app.use('/api/alerts', alertsRouter);
 
 // Test endpoint
 app.get('/api/test', (req, res) => {
-  res.json({ success: true, message: 'API is working!', timestamp: Date.now() });
+  res.json({ 
+    success: true, 
+    message: 'API is working!', 
+    timestamp: Date.now(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Indian Stock Market Routes
 app.get('/api/nifty50/stocks', (req, res) => {
-  res.json({ success: true, data: NIFTY_50_STOCKS });
+  try {
+    res.json({ success: true, data: NIFTY_50_STOCKS || [] });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 app.get('/api/stock/price/:symbol', async (req, res) => {
@@ -49,32 +69,25 @@ app.get('/api/stock/price/:symbol', async (req, res) => {
     const { symbol } = req.params;
     console.log('Fetching price for:', symbol);
     
-    try {
-      const price = await nseDataService.getCurrentPrice(symbol);
-      res.json({ success: true, data: price });
-    } catch (apiError) {
-      console.error('Yahoo Finance API error:', apiError.message);
-      
-      // Fallback to mock data if API fails
-      const mockPrice = {
-        symbol: symbol,
-        price: 3500 + Math.random() * 500,
-        change: (Math.random() - 0.5) * 100,
-        changePercent: (Math.random() - 0.5) * 5,
-        dayHigh: 3600 + Math.random() * 400,
-        dayLow: 3400 + Math.random() * 400,
-        previousClose: 3500,
-        volume: 1000000 + Math.random() * 5000000,
-        marketCap: 100000000000
-      };
-      
-      console.log('Using mock data for', symbol);
-      res.json({ 
-        success: true, 
-        data: mockPrice,
-        note: 'Using simulated data - Yahoo Finance API unavailable'
-      });
-    }
+    // Always use mock data for now (Yahoo Finance has issues in serverless)
+    const mockPrice = {
+      symbol: symbol,
+      price: 3500 + Math.random() * 500,
+      change: (Math.random() - 0.5) * 100,
+      changePercent: (Math.random() - 0.5) * 5,
+      dayHigh: 3600 + Math.random() * 400,
+      dayLow: 3400 + Math.random() * 400,
+      previousClose: 3500,
+      volume: 1000000 + Math.random() * 5000000,
+      marketCap: 100000000000
+    };
+    
+    console.log('Using mock data for', symbol);
+    res.json({ 
+      success: true, 
+      data: mockPrice,
+      note: 'Using simulated data'
+    });
   } catch (error) {
     console.error('Error in price endpoint:', error);
     res.status(500).json({ success: false, error: error.message });
