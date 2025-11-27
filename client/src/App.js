@@ -88,18 +88,34 @@ function App() {
             <p>Search and analyze Nifty 50 stocks, NSE/BSE stocks, and NIFTY options</p>
           </div>
           
-          <IndexDashboard />
+          {(() => {
+            try {
+              return <IndexDashboard />;
+            } catch (error) {
+              console.error('IndexDashboard error:', error);
+              return <div style={{padding: '20px', color: '#fff'}}>Loading indices...</div>;
+            }
+          })()}
           
-          <UniversalStockSearch 
-            onStockAnalyzed={(signal) => {
-              try {
-                console.log('Stock analyzed:', signal);
-                setIndianStockSignal(signal);
-              } catch (error) {
-                console.error('Error setting signal:', error);
-              }
-            }} 
-          />
+          {(() => {
+            try {
+              return (
+                <UniversalStockSearch 
+                  onStockAnalyzed={(signal) => {
+                    try {
+                      console.log('Stock analyzed:', signal);
+                      setIndianStockSignal(signal);
+                    } catch (error) {
+                      console.error('Error setting signal:', error);
+                    }
+                  }} 
+                />
+              );
+            } catch (error) {
+              console.error('UniversalStockSearch error:', error);
+              return <div style={{padding: '20px', color: '#fff'}}>Loading search...</div>;
+            }
+          })()}
           
           {indianStockSignal && (
             <div className="indian-signal-display">
