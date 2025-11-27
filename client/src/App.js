@@ -7,9 +7,7 @@ import ChartView from './components/ChartView';
 import Watchlist from './components/Watchlist';
 import RiskManager from './components/RiskManager';
 import IndexDashboard from './components/IndexDashboard';
-import Nifty50List from './components/Nifty50List';
 import UniversalStockSearch from './components/UniversalStockSearch';
-import TopSignals from './components/TopSignals';
 import './App.css';
 
 function App() {
@@ -17,8 +15,6 @@ function App() {
   const [activeSymbol, setActiveSymbol] = useState('BTCUSDT');
   const [signals, setSignals] = useState([]);
   const [indianStockSignal, setIndianStockSignal] = useState(null);
-  const [topSignals, setTopSignals] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const websocket = new WebSocket('ws://localhost:5000');
