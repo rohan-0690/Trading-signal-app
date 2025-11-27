@@ -90,7 +90,10 @@ function App() {
           
           <IndexDashboard />
           
-          <UniversalStockSearch onStockAnalyzed={setIndianStockSignal} />
+          <UniversalStockSearch onStockAnalyzed={(signal) => {
+            console.log('Stock analyzed:', signal);
+            setIndianStockSignal(signal);
+          }} />
           
           {indianStockSignal && (
             <div className="indian-signal-display">

@@ -43,11 +43,14 @@ function UniversalStockSearch({ onStockAnalyzed }) {
     
     try {
       const symbol = getStockSymbol(searchQuery);
+      toast.info(`Fetching data for ${symbol}...`);
       
       // First, try to get the stock price to verify it exists
       const priceResponse = await axios.get(`/api/stock/price/${symbol}`);
       
       if (priceResponse.data.success) {
+        toast.info('Analyzing stock patterns...');
+        
         // Now analyze the stock
         const signalResponse = await axios.post('/api/stock/signal', {
           symbol: symbol,
@@ -55,21 +58,45 @@ function UniversalStockSearch({ onStockAnalyzed }) {
           sector: 'Custom'
         });
         
-        if (signalResponse.data.success) {
-          toast.success(`Analysis complete for ${searchQuery.toUpperCase()}`);
+        console.log('Signal Response:', signalResponse.data);
+        
+        if (signalResponse.data.success && signalResponse.data.data) {
+          toast.success(`✅ Analysis complete for ${searchQuery.toUpperCase()}`);
           onStockAnalyzed(signalResponse.data.data);
         } else {
-          toast.info(signalResponse.data.message || 'No strong signal detected. HOLD recommended.');
-          onStockAnalyzed(null);
+          // Create a basic signal even if no strong signal detected
+          const basicSignal = {
+            symbol: symbol,
+            name: searchQuery.toUpperCase(),
+            action: 'HOLD',
+            entry: priceResponse.data.data.price,
+            stopLoss: priceResponse.data.data.price * 0.95,
+            targets: [
+              priceResponse.data.data.price * 1.02,
+              priceResponse.data.data.price * 1.05,
+              priceResponse.data.data.price * 1.08
+            ],
+            confidence: 50,
+            reason: signalResponse.data.message || 'No strong signal detected. Current market conditions suggest holding.',
+            sector: 'Custom',
+            timeframe: '5m',
+            riskReward: '1:1.5'
+          };
+          toast.info('No strong signal detected. Showing basic analysis.');
+          onStockAnalyzed(basicSignal);
         }
       }
     } catch (error) {
-      if (error.response?.status === 404 || error.message.includes('Not Found')) {
-        toast.error(`Stock "${searchQuery.toUpperCase()}" not found. Try with .NS or .BO suffix (e.g., INFY.NS)`);
-      } else {
-        toast.error('Error analyzing stock. Please check the symbol and try again.');
-      }
       console.error('Search error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      if (error.response?.status === 404 || error.message.includes('Not Found')) {
+        toast.error(`Stock "${searchQuery.toUpperCase()}" not found. Try: TCS, INFY, RELIANCE`);
+      } else if (error.response?.data?.error) {
+        toast.error(`Error: ${error.response.data.error}`);
+      } else {
+        toast.error('Error analyzing stock. The API might be unavailable.');
+      }
     } finally {
       setLoading(false);
     }
