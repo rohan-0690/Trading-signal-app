@@ -366,9 +366,13 @@ setInterval(async () => {
 }, 120000); // Every 2 minutes
 
 const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-  console.log(`🚀 NSE/BSE Trading Signal Server running on port ${PORT}`);
-  console.log(`📊 Monitoring ${NIFTY_50_STOCKS.length} Nifty 50 stocks`);
-});
 
-module.exports = { broadcastUpdate };
+// Only start server if not in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+  server.listen(PORT, () => {
+    console.log(`🚀 NSE/BSE Trading Signal Server running on port ${PORT}`);
+    console.log(`📊 Monitoring ${NIFTY_50_STOCKS.length} Nifty 50 stocks`);
+  });
+}
+
+module.exports = app;
