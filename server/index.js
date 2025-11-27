@@ -11,6 +11,16 @@ const alertsRouter = require('./routes/alerts');
 const MarketDataService = require('./services/marketDataService');
 const SignalEngine = require('./services/signalEngine');
 
+// Indian Stock Market Services
+const NSEDataService = require('./services/nseDataService');
+const IndianStockSignalEngine = require('./services/indianStockSignalEngine');
+const OptionsCalculator = require('./services/optionsCalculator');
+const { NIFTY_50_STOCKS } = require('./config/nifty50');
+
+const nseDataService = new NSEDataService();
+const indianSignalEngine = new IndianStockSignalEngine();
+const optionsCalculator = new OptionsCalculator();
+
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
@@ -23,6 +33,93 @@ app.use(express.json());
 app.use('/api/market', marketDataRouter);
 app.use('/api/signals', signalsRouter);
 app.use('/api/alerts', alertsRouter);
+
+// Indian Stock Market Routes
+app.get('/api/nifty50/stocks', (req, res) => {
+  res.json({ success: true, data: NIFTY_50_STOCKS });
+});
+
+app.get('/api/stock/price/:symbol', async (req, res) => {
+  try {
+    const { symbol } = req.params;
+    const price = await nseDataService.getCurrentPrice(symbol);
+    res.json({ success: true, data: price });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.post('/api/stock/signal', async (req, res) => {
+  try {
+    const { symbol, name, sector } = req.body;
+    const candles = await nseDataService.getStockData(symbol, '1d', '5m');
+    const signal = indianSignalEngine.analyzeStock(candles, { symbol, name, sector });
+    
+    if (!signal) {
+      return res.json({ 
+        success: false, 
+        message: 'No strong signal detected. HOLD recommended.' 
+      });
+    }
+    
+    res.json({ success: true, data: signal });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/index/nifty50', async (req, res) => {
+  try {
+    const nifty = await nseDataService.getNifty50Index();
+    res.json({ success: true, data: nifty });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/index/sensex', async (req, res) => {
+  try {
+    const sensex = await nseDataService.getSensexIndex();
+    res.json({ success: true, data: sensex });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/options/premium/:strike/:type', async (req, res) => {
+  try {
+    const { strike, type } = req.params;
+    const nifty = await nseDataService.getNifty50Index();
+    const spotPrice = nifty.price;
+    
+    const premium = optionsCalculator.calculatePremium(
+      spotPrice, 
+      parseFloat(strike), 
+      type.toUpperCase()
+    );
+    
+    const greeks = optionsCalculator.calculateGreeks(
+      spotPrice,
+      parseFloat(strike),
+      type.toUpperCase()
+    );
+    
+    res.json({ 
+      success: true, 
+      data: {
+        strike: parseFloat(strike),
+        type: type.toUpperCase(),
+        spotPrice,
+        premium: parseFloat(premium.toFixed(2)),
+        greeks,
+        daysToExpiry: optionsCalculator.getDaysToExpiry(),
+        timestamp: Date.now()
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // Serve static files from React build in production
 if (process.env.NODE_ENV === 'production') {
