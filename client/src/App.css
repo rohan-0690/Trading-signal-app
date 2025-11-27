@@ -70,3 +70,179 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Tab Navigation */
+.header-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0 20px;
+}
+
+.tab-btn {
+  padding: 10px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Indian Stocks Container */
+.indian-stocks-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.indian-signal-display {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.indian-signal-display h3 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.signal-details {
+  color: #fff;
+}
+
+.signal-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.signal-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #fff;
+}
+
+.action-badge {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.action-badge.buy {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.action-badge.sell {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  color: white;
+}
+
+.action-badge.hold {
+  background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+  color: white;
+}
+
+.confidence-badge {
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.price-targets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.target-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.target-item .label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.target-item .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.signal-reason {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.signal-reason strong {
+  color: #667eea;
+  margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+  .header-tabs {
+    margin: 10px 0;
+  }
+  
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .app-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+  
+  .price-targets {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,266 @@
+.options-chain {
+  background: rgba(10, 14, 39, 0.6);
+  backdrop-filter: blur(25px);
+  border-radius: 24px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  margin-bottom: 2rem;
+}
+
+.options-chain.loading,
+.options-chain.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  gap: 1rem;
+}
+
+.chain-header {
+  margin-bottom: 2rem;
+}
+
+.chain-header h2 {
+  font-size: 2rem;
+  color: #ffa500;
+  margin-bottom: 1rem;
+}
+
+.chain-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 165, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.info-item .label {
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.info-item .value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.refresh-btn {
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 165, 0, 0.2);
+  border: 2px solid #ffa500;
+  color: #ffa500;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 165, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.chain-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.chain-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.chain-table thead tr:first-child th {
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.call-header {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.15), rgba(0, 255, 0, 0.05));
+  color: #00ff00;
+}
+
+.put-header {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 68, 68, 0.05));
+  color: #ff4444;
+}
+
+.strike-header {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+}
+
+.chain-table thead tr:last-child th {
+  padding: 0.75rem 0.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid rgba(255, 165, 0, 0.3);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chain-table tbody tr {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.chain-table tbody tr:hover {
+  background: rgba(255, 165, 0, 0.1);
+}
+
+.chain-table tbody tr.atm-row {
+  background: rgba(255, 165, 0, 0.15);
+  border-top: 2px solid #ffa500;
+  border-bottom: 2px solid #ffa500;
+}
+
+.chain-table tbody tr.selected-row {
+  background: rgba(255, 165, 0, 0.25);
+  box-shadow: inset 0 0 20px rgba(255, 165, 0, 0.2);
+}
+
+.chain-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.call-data {
+  color: rgba(0, 255, 0, 0.8);
+}
+
+.put-data {
+  color: rgba(255, 68, 68, 0.8);
+}
+
+.premium {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.strike-cell {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ffa500;
+  position: relative;
+}
+
+.strike-cell.atm {
+  color: #ffa500;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+}
+
+.atm-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background: #ffa500;
+  color: black;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.selected-strike-info {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.selected-strike-info h3 {
+  color: #ffa500;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.strike-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.detail-card {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 14px;
+  border: 1px solid;
+}
+
+.detail-card.call-card {
+  border-color: rgba(0, 255, 0, 0.3);
+}
+
+.detail-card.put-card {
+  border-color: rgba(255, 68, 68, 0.3);
+}
+
+.detail-card h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.detail-card.call-card h4 {
+  color: #00ff00;
+}
+
+.detail-card.put-card h4 {
+  color: #ff4444;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.detail-item span:first-child {
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.detail-item .value {
+  font-weight: 700;
+  color: white;
+}
+
+@media (max-width: 1024px) {
+  .strike-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .chain-table {
+    font-size: 0.8rem;
+  }
+  
+  .chain-table td,
+  .chain-table th {
+    padding: 0.5rem 0.25rem;
+  }
+}
