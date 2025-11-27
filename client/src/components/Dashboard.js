@@ -13,9 +13,10 @@ function Dashboard({ symbol }) {
 
   const fetchStats = async () => {
     try {
+      const API_BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
       const [priceRes, accuracyRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/market/price/${symbol}`),
-        axios.get('http://localhost:5000/api/signals/accuracy')
+        axios.get(`${API_BASE_URL}/api/market/price/${symbol}`),
+        axios.get(`${API_BASE_URL}/api/signals/accuracy`)
       ]);
 
       setStats(prev => ({

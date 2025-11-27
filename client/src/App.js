@@ -15,6 +15,12 @@ function App() {
   const [signals, setSignals] = useState([]);
 
   useEffect(() => {
+    // Skip WebSocket in production for now (Vercel doesn't support WebSocket in serverless)
+    if (process.env.NODE_ENV === 'production') {
+      console.log('WebSocket disabled in production');
+      return;
+    }
+
     const websocket = new WebSocket('ws://localhost:5000');
     
     websocket.onopen = () => {
@@ -37,7 +43,15 @@ function App() {
       }
     };
 
-    return () => websocket.close();
+    websocket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => {
+      if (websocket.readyState === WebSocket.OPEN) {
+        websocket.close();
+      }
+    };
   }, [activeSymbol]);
 
   return (

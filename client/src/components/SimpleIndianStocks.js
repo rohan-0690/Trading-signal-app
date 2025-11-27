@@ -3,6 +3,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import './SimpleIndianStocks.css';
 
+// API Configuration
+const API_BASE_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:5000'
+  : '';
+
 function SimpleIndianStocks() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +26,7 @@ function SimpleIndianStocks() {
       : `${searchQuery.toUpperCase()}.NS`;
 
     try {
-      const response = await axios.post('/api/stock/signal', {
+      const response = await axios.post(`${API_BASE_URL}/api/stock/signal`, {
         symbol: symbol,
         name: searchQuery.toUpperCase(),
         sector: 'Custom'

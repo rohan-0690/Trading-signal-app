@@ -9,7 +9,8 @@ function ChartView({ symbol }) {
 
   const fetchChartData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/market/candles/${symbol}`, {
+      const API_BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
+      const response = await axios.get(`${API_BASE_URL}/api/market/candles/${symbol}`, {
         params: { interval: timeframe, limit: 50 }
       });
       
