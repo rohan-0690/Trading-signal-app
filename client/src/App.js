@@ -10,10 +10,9 @@ import SimpleIndianStocks from './components/SimpleIndianStocks';
 import './App.css';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('crypto'); // 'crypto' or 'indian-stocks'
+  const [activeTab, setActiveTab] = useState('crypto');
   const [activeSymbol, setActiveSymbol] = useState('BTCUSDT');
   const [signals, setSignals] = useState([]);
-  const [indianStockSignal, setIndianStockSignal] = useState(null);
 
   useEffect(() => {
     const websocket = new WebSocket('ws://localhost:5000');
@@ -83,150 +82,6 @@ function App() {
       ) : (
         <div className="indian-stocks-container">
           <SimpleIndianStocks />
-        </div>
-      )}
-
-      {false && indianStockSignal && (
-            <div className="indian-signal-display">
-              <h3>📊 Analysis Result</h3>
-              <div className="signal-details">
-                <div className="signal-header">
-                  <h2>{String(indianStockSignal.name || indianStockSignal.symbol || 'Stock')}</h2>
-                  <span className={`action-badge ${String(indianStockSignal.action || 'hold').toLowerCase()}`}>
-                    {String(indianStockSignal.action || 'HOLD')}
-                  </span>
-                  <span className="confidence-badge">{Number(indianStockSignal.confidence || 50)}% Confidence</span>
-                </div>
-                
-                <div className="signal-meta">
-                  <div className="meta-item">
-                    <span className="meta-label">Sector:</span>
-                    <span className="meta-value">{indianStockSignal.sector || 'N/A'}</span>
-                  </div>
-                  <div className="meta-item">
-                    <span className="meta-label">Timeframe:</span>
-                    <span className="meta-value">{indianStockSignal.timeframe || '5m'}</span>
-                  </div>
-                  <div className="meta-item">
-                    <span className="meta-label">Risk:Reward:</span>
-                    <span className="meta-value">{indianStockSignal.riskReward || 'N/A'}</span>
-                  </div>
-                  {indianStockSignal.duration && (
-                    <div className="meta-item">
-                      <span className="meta-label">Duration:</span>
-                      <span className="meta-value">{indianStockSignal.duration}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="price-targets">
-                  <div className="target-item entry">
-                    <span className="label">Entry Price</span>
-                    <span className="value">
-                      ₹{typeof indianStockSignal.entry === 'number' 
-                        ? indianStockSignal.entry.toFixed(2) 
-                        : (indianStockSignal.targets && indianStockSignal.targets[0] 
-                          ? indianStockSignal.targets[0].toFixed(2) 
-                          : 'N/A')}
-                    </span>
-                  </div>
-                  <div className="target-item sl">
-                    <span className="label">Stop Loss</span>
-                    <span className="value">
-                      ₹{typeof indianStockSignal.stopLoss === 'number' 
-                        ? indianStockSignal.stopLoss.toFixed(2) 
-                        : 'N/A'}
-                    </span>
-                  </div>
-                  <div className="target-item t1">
-                    <span className="label">Target 1</span>
-                    <span className="value">
-                      ₹{indianStockSignal.targets && indianStockSignal.targets[0]
-                        ? indianStockSignal.targets[0].toFixed(2)
-                        : (typeof indianStockSignal.target1 === 'number' 
-                          ? indianStockSignal.target1.toFixed(2) 
-                          : 'N/A')}
-                    </span>
-                  </div>
-                  <div className="target-item t2">
-                    <span className="label">Target 2</span>
-                    <span className="value">
-                      ₹{indianStockSignal.targets && indianStockSignal.targets[1]
-                        ? indianStockSignal.targets[1].toFixed(2)
-                        : (typeof indianStockSignal.target2 === 'number' 
-                          ? indianStockSignal.target2.toFixed(2) 
-                          : 'N/A')}
-                    </span>
-                  </div>
-                  <div className="target-item t3">
-                    <span className="label">Target 3</span>
-                    <span className="value">
-                      ₹{indianStockSignal.targets && indianStockSignal.targets[2]
-                        ? indianStockSignal.targets[2].toFixed(2)
-                        : (typeof indianStockSignal.target3 === 'number' 
-                          ? indianStockSignal.target3.toFixed(2) 
-                          : 'N/A')}
-                    </span>
-                  </div>
-                </div>
-
-                {indianStockSignal.patterns && indianStockSignal.patterns.length > 0 && (
-                  <div className="patterns-detected">
-                    <h4>📈 Patterns Detected:</h4>
-                    <div className="pattern-tags">
-                      {indianStockSignal.patterns.map((pattern, idx) => (
-                        <span key={idx} className="pattern-tag">{pattern}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {indianStockSignal.indicators && typeof indianStockSignal.indicators === 'object' && (
-                  <div className="indicators-info">
-                    <h4>📊 Technical Indicators:</h4>
-                    <div className="indicators-grid">
-                      {typeof indianStockSignal.indicators.rsi === 'number' && (
-                        <div className="indicator-item">
-                          <span className="indicator-label">RSI:</span>
-                          <span className="indicator-value">{indianStockSignal.indicators.rsi.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {indianStockSignal.indicators.macd && typeof indianStockSignal.indicators.macd === 'object' && (
-                        <div className="indicator-item">
-                          <span className="indicator-label">MACD:</span>
-                          <span className="indicator-value">
-                            {typeof indianStockSignal.indicators.macd.histogram === 'number' 
-                              ? indianStockSignal.indicators.macd.histogram.toFixed(2) 
-                              : 'N/A'}
-                          </span>
-                        </div>
-                      )}
-                      {indianStockSignal.indicators.ema && typeof indianStockSignal.indicators.ema === 'object' && (
-                        <>
-                          {typeof indianStockSignal.indicators.ema.ema20 === 'number' && (
-                            <div className="indicator-item">
-                              <span className="indicator-label">EMA 20:</span>
-                              <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema20.toFixed(2)}</span>
-                            </div>
-                          )}
-                          {typeof indianStockSignal.indicators.ema.ema50 === 'number' && (
-                            <div className="indicator-item">
-                              <span className="indicator-label">EMA 50:</span>
-                              <span className="indicator-value">₹{indianStockSignal.indicators.ema.ema50.toFixed(2)}</span>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                )}
-                
-                <div className="signal-reason">
-                  <strong>📝 Analysis:</strong> {indianStockSignal.reason || 'Technical analysis based on patterns and indicators'}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 
