@@ -246,3 +246,24 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Indian Stocks Welcome */
+.indian-stocks-welcome {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(255, 153, 51, 0.1) 0%, rgba(19, 136, 8, 0.1) 50%, rgba(0, 0, 255, 0.1) 100%);
+  border-radius: 20px;
+  margin-bottom: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.indian-stocks-welcome h2 {
+  color: #fff;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.indian-stocks-welcome p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+}

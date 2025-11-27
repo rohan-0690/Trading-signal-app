@@ -17,6 +17,8 @@ function App() {
   const [activeSymbol, setActiveSymbol] = useState('BTCUSDT');
   const [signals, setSignals] = useState([]);
   const [indianStockSignal, setIndianStockSignal] = useState(null);
+  const [topSignals, setTopSignals] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const websocket = new WebSocket('ws://localhost:5000');
@@ -85,8 +87,15 @@ function App() {
         </div>
       ) : (
         <div className="indian-stocks-container">
+          <div className="indian-stocks-welcome">
+            <h2>🇮🇳 Indian Stock Market Analysis</h2>
+            <p>Search and analyze Nifty 50 stocks, NSE/BSE stocks, and NIFTY options</p>
+          </div>
+          
           <IndexDashboard />
+          
           <UniversalStockSearch onStockAnalyzed={setIndianStockSignal} />
+          
           {indianStockSignal && (
             <div className="indian-signal-display">
               <h3>📊 Analysis Result</h3>
@@ -126,8 +135,6 @@ function App() {
               </div>
             </div>
           )}
-          <TopSignals />
-          <Nifty50List />
         </div>
       )}
 
