@@ -34,6 +34,11 @@ app.use('/api/market', marketDataRouter);
 app.use('/api/signals', signalsRouter);
 app.use('/api/alerts', alertsRouter);
 
+// Test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: 'API is working!', timestamp: Date.now() });
+});
+
 // Indian Stock Market Routes
 app.get('/api/nifty50/stocks', (req, res) => {
   res.json({ success: true, data: NIFTY_50_STOCKS });
