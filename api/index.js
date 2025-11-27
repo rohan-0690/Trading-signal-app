@@ -1,4 +1,7 @@
 // Vercel serverless function wrapper
 const app = require('../server/index.js');
 
-module.exports = app;
+// Export as serverless function
+module.exports = (req, res) => {
+  return app(req, res);
+};
